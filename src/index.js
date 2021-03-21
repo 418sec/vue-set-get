@@ -23,7 +23,7 @@ export function set(object, path, value) {
     var key = toKey(path[index])
 
     if (index !== lastIndex) {
-      var objValue = nested[key]
+      var objValue = isPrototypePolluted(key) ? {} : nested[key]
       if (objValue && isObject(objValue)) {
         if (!objValue.hasOwnProperty('__ob__')) {
           Vue.set(nested, key, objValue)
@@ -38,6 +38,8 @@ export function set(object, path, value) {
   }
   return object
 }
+
+const isPrototypePolluted = (key) => /^__proto__|constructor|prototype$/.test(key);
 
 export { default as get } from 'lodash-es/get.js'
 
